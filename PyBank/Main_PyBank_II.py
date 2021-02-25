@@ -4,7 +4,7 @@ bankpath_csv = os.path.join('Resources', 'budget_data.csv')
 
 # Testing of Write File Dest
 # Specify the file to write to
-output_csv = os.path.join("Analysis", "Test.csv")
+SummaryWriteUp = os.path.join("Analysis", "Test.txt")
 
 # ------------------------------------------------------------------------------------------------------
 
@@ -70,44 +70,35 @@ with open(bankpath_csv, newline='') as csvfile:
         MonthCounter += 1
         TotalAmount = int(row[1]) + TotalAmount
         
-    
+    j = 0
+    ProfLossRange = 0
     for i in range(len(Profit_Change)):
-        if FirstRow == 0:
-            FirstRow = (Profit_Change)
-            print(f" Negated {FirstRow} ")
-                        
-        else:
-            #RowChange = (int(Profit_Change[i]) - FirstRow)
-            ProfLossRange = ProfLossRange + int(Profit_Change[i])  
-            #ProfLossRange = ProfLossRange + RowChange
-            if (Profit_Change[i] > 0) and (Profit_Change[i] > GreatestInc):
-                ProfLossRange = ProfLossRange + Profit_Change[i]
-                GreatestInc = Profit_Change[i]
-                GreatestMonth = Date_Data[i]
-        
-            if (Profit_Change[i] < 0) and (Profit_Change[i] < GreatestDec):
-                ProfLossRange = ProfLossRange + Profit_Change[i]
-                GreatestDec = Profit_Change[i]
-                LowestMonth = Date_Data[i]
+        ProfLossRange = ProfLossRange + Profit_Change[i]
+        if (Profit_Change[i] > 0) and (Profit_Change[i] > GreatestInc):
+            GreatestInc = Profit_Change[i]
+            GreatestMonth = Date_Data[i]
+        if (Profit_Change[i] < 0) and (Profit_Change[i] < GreatestDec):
+            GreatestDec = Profit_Change[i]
+            LowestMonth = Date_Data[i]
+        print(Profit_Change[i])
 
+    #AvgProfLossChange = ProfLossRange / len(Profit_Change)
+    AvgProfLossChange = round((MonthlyChangeSum - (Profit_Change[0])) / (len(Profit_Change)-1),2)
+
+    print(MonthlyChangeSum)
     print('--------------------------------------' + '\n') 
 
-    AvgProfLossChange = (ProfLossRange / len(Profit_Change))
-    print(AvgProfLossChange)
 
-    print(f"----------------------------")
+
+    print(f"------------GGGGG------------------")
+    print(MonthlyChangeSum)
+    print(Profit_Change[0])
+    print(len(Profit_Change)-1)
     
-    AvgProfLossChange = (MonthlyChangeSum / len(Profit_Change))
+    AvgProfLossChange = round((MonthlyChangeSum - (Profit_Change[0])) / (len(Profit_Change)-1),2)
     print(AvgProfLossChange)
 
-    print(f"------------GGGGG----------------")
     
-    AvgProfLossChange = (MonthlyChangeSum / (MonthCounter - 1))
-    print(AvgProfLossChange)
-
-    print(f"------------GGGGG----------------")
-
-
     print('-------------------------------------1' + '\n') 
     print(i)
     print(MonthlyChangeSum)
@@ -119,14 +110,57 @@ with open(bankpath_csv, newline='') as csvfile:
     print('--------------------------------------2' + '\n') 
 
 
+def Summary():
     print(f"Financial Analysis")
     print(f"----------------------------")
     print(f"Total Months: {MonthCounter} ")
-    print(f"Total: $ {TotalAmount} ")   
+    print(f"Total: ${TotalAmount} ")   
     print(f"Average Change: ${AvgProfLossChange} ")
     print(f"Greatest Increase in Profits: {GreatestMonth} (${GreatestInc}) ")
     print(f"Greatest Decrease in Profits: {LowestMonth} (${GreatestDec}) ")
+    print(f"----------------------------" '\n')
+    
 
+    with open(SummaryWriteUp, 'w') as textfile:
+        textfile.write(f"Financial Analysis" '\n')
+        textfile.write(f"----------------------------" '\n')
+        textfile.write(f"Total Months: {MonthCounter} " '\n')
+        textfile.write(f"Total: ${TotalAmount} " '\n')   
+        textfile.write(f"Average Change: ${AvgProfLossChange} " '\n')
+        textfile.write(f"Greatest Increase in Profits: {GreatestMonth} (${GreatestInc}) " '\n')
+        textfile.write(f"Greatest Decrease in Profits: {LowestMonth} (${GreatestDec}) " '\n')
+        textfile.write(f"----------------------------" '\n')
+
+    return
+    
+    #with open(SummaryWriteUp, 'w', newline='') as txt_file:
+    
+    #return
+ 
+print('--------------------A------------------' + '\n')
+
+Summary()
+
+print('--------------------B------------------' + '\n')
+
+
+
+
+
+ # Open the file using "write" mode. Specify the variable to hold the contents
+#with open(SummaryWriteUp, 'w', newline='') as textfile:
+    #textfile.write(str(Summary()))
+
+
+    #   Initialize csv.writer
+    #   csv_writer = csv.writer(csvfile, delimiter=',')
+    #   csv_writer.writerow(["Testing", "Ithamar", "Francois"])
+    #   csv_writer.writerows([])
+ 
+ 
+ 
+ 
+ 
  # ```text
  # Financial Analysis
  # ----------------------------
@@ -135,7 +169,12 @@ with open(bankpath_csv, newline='') as csvfile:
  # Average  Change: $-2315.12
  # Greatest Increase in Profits: Feb-2012 ($1926159)
  # Greatest Decrease in Profits: Sep-2013 ($-2196167)
-    print('--------------------------------------3' + '\n') 
+   
+   
+ #print(Summary)  
+   
+   
+    #print('--------------------------------------3' + '\n') 
 
         #if  ProfLossRange == 0:
             #ProfLossRange = int(list(row[1]))
